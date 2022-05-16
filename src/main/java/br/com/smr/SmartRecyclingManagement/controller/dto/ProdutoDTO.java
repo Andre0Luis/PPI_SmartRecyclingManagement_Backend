@@ -1,45 +1,26 @@
-package br.com.smr.SmartRecyclingManagement.domain;
+package br.com.smr.SmartRecyclingManagement.controller.dto;
 
-import javax.persistence.*;
+import br.com.smr.SmartRecyclingManagement.domain.CategoriaProduto;
+import br.com.smr.SmartRecyclingManagement.domain.TipoMaterial;
+import br.com.smr.SmartRecyclingManagement.domain.TipoReciclagem;
 
-@Entity
-public class Produto {
+public class ProdutoDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column
     private String nome;
-    @Column
     private String descricao;
-    @Column
     private Double preco;
-    @Column
     private Integer quantidade;
-    @Column
     private String marca;
-    @Column
     private String codBarras;
-    @Column
     private Double peso;
-    @Column
     private Double pesoEmbalagem;
-    @Column
     private Double pesoLiquido;
-    @Column
     private Double pesoBruto;
-    @Enumerated(EnumType.STRING)
     private TipoMaterial tipoMaterial;
-    @Enumerated(EnumType.STRING)
     private TipoReciclagem tipoReciclagem;
-    @Enumerated(EnumType.STRING)
     private CategoriaProduto categoria;
 
-    public Produto() {
-    }
-
-    public Produto(Long id, String nome, String descricao, Double preco, Integer quantidade, String marca, String codBarras, Double peso, Double pesoEmbalagem, Double pesoLiquido, Double pesoBruto, TipoMaterial tipoMaterial, TipoReciclagem tipoReciclagem, CategoriaProduto categoria) {
-        this.id = id;
+    public ProdutoDTO(String nome, String descricao, Double preco, Integer quantidade, String marca, String codBarras, Double peso, Double pesoEmbalagem, Double pesoLiquido, Double pesoBruto, TipoMaterial tipoMaterial, TipoReciclagem tipoReciclagem, CategoriaProduto categoria) {
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
@@ -55,12 +36,7 @@ public class Produto {
         this.categoria = categoria;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public ProdutoDTO() {
     }
 
     public String getNome() {
@@ -127,6 +103,22 @@ public class Produto {
         this.pesoEmbalagem = pesoEmbalagem;
     }
 
+    public Double getPesoLiquido() {
+        return pesoLiquido;
+    }
+
+    public void setPesoLiquido(Double pesoLiquido) {
+        this.pesoLiquido = pesoLiquido;
+    }
+
+    public Double getPesoBruto() {
+        return pesoBruto;
+    }
+
+    public void setPesoBruto(Double pesoBruto) {
+        this.pesoBruto = pesoBruto;
+    }
+
     public TipoMaterial getTipoMaterial() {
         return tipoMaterial;
     }
@@ -151,27 +143,10 @@ public class Produto {
         this.categoria = categoria;
     }
 
-    public Double getPesoLiquido() {
-        return pesoLiquido;
-    }
-
-    public void setPesoLiquido(Double pesoLiquido) {
-        this.pesoLiquido = pesoLiquido;
-    }
-
-    public Double getPesoBruto() {
-        return pesoBruto;
-    }
-
-    public void setPesoBruto(Double pesoBruto) {
-        this.pesoBruto = pesoBruto;
-    }
-
     @Override
     public String toString() {
-        return "Produto{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
+        return "ProdutoDTO{" +
+                "nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", preco=" + preco +
                 ", quantidade=" + quantidade +
