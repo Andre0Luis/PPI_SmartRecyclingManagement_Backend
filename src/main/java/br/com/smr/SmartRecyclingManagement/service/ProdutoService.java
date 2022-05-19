@@ -33,8 +33,14 @@ public class ProdutoService {
         produtoSalvo.setCategoria(produto.getCategoria());
         produtoSalvo.setTipoMaterial(produto.getTipoMaterial());
         produtoSalvo.setTipoReciclagem(produto.getTipoReciclagem());
+        produtoSalvo.setPesoEmbalagem(pesoEmbalagem(produto));
 
         return produtoRepository.save(produtoSalvo);
+    }
+
+    public double pesoEmbalagem(ProdutoDTO produto){
+        double pesoEmbalagem = (produto.getPesoBruto() - produto.getPesoLiquido());
+    	return pesoEmbalagem;
     }
 
     public Produto update(ProdutoDTO produto, Long id){

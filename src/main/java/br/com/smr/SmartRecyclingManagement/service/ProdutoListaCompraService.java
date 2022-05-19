@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProdutoListaCompraService {
@@ -69,6 +70,10 @@ public class ProdutoListaCompraService {
 
     public List<ProdutoListaCompra> findAll(){
         return produtoListaCompraRepository.findAll();
+    }
+
+    public List<ProdutoDTO> findAllByListaCompraId(Long id){
+        return produtoListaCompraRepository.findAllByListaCompraId(id).stream().map(ProdutoDTO::new).collect(Collectors.toList());
     }
 
     public Optional<ProdutoListaCompra> findById(Long id){
