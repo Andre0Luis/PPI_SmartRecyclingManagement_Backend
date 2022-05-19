@@ -1,62 +1,44 @@
-package br.com.smr.SmartRecyclingManagement.domain;
+package br.com.smr.SmartRecyclingManagement.controller.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
+import br.com.smr.SmartRecyclingManagement.domain.ListaCompra;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity
-public class ListaCompra {
+public class ListaCompraDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column
     private String nome;
-    @Column
     private String descricao;
-    @Column
-    @CreationTimestamp
     private LocalDate dataCadastro;
-    @Column
     private LocalDate dataCompra;
-    @Column
-    @UpdateTimestamp
     private LocalDate dataAtualizacao;
-    @Column
     private String tipo;
+    private List<ProdutoDTO> produtos;
+    private Long listaCompraId;
 
-    @ManyToOne
-    private Cliente cliente;
-
-    @JsonBackReference
-    @OneToMany(mappedBy = "listaCompra", cascade = CascadeType.ALL)
-    private List<ProdutoListaCompra> produtos;
-
-    public ListaCompra(Long id, String nome, String descricao, LocalDate dataCadastro, LocalDate dataCompra, LocalDate dataAtualizacao, String tipo, Cliente cliente, List<ProdutoListaCompra> produtos) {
-        this.id = id;
+    public ListaCompraDTO(String nome, String descricao, LocalDate dataCadastro, LocalDate dataCompra, LocalDate dataAtualizacao, String tipo, List<ProdutoDTO> produtos, Long listaCompraId) {
         this.nome = nome;
         this.descricao = descricao;
         this.dataCadastro = dataCadastro;
         this.dataCompra = dataCompra;
         this.dataAtualizacao = dataAtualizacao;
         this.tipo = tipo;
-        this.cliente = cliente;
         this.produtos = produtos;
+        this.listaCompraId = listaCompraId;
     }
 
-    public ListaCompra() {
-    }
-    public Long getId() {
-        return id;
+    public ListaCompraDTO() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public ListaCompraDTO(ListaCompra listaCompra) {
+        this.nome = listaCompra.getNome();
+        this.descricao = listaCompra.getDescricao();
+        this.dataCadastro = listaCompra.getDataCadastro();
+        this.dataCompra = listaCompra.getDataCompra();
+        this.dataAtualizacao = listaCompra.getDataAtualizacao();
+        this.tipo = listaCompra.getTipo();
+        this.listaCompraId = listaCompra.getId();
+
     }
 
     public String getNome() {
@@ -91,22 +73,6 @@ public class ListaCompra {
         this.dataCompra = dataCompra;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public List<ProdutoListaCompra> getProdutos() {
-        return produtos;
-    }
-
-    public void setProdutos(List<ProdutoListaCompra> produtos) {
-        this.produtos = produtos;
-    }
-
     public LocalDate getDataAtualizacao() {
         return dataAtualizacao;
     }
@@ -115,26 +81,41 @@ public class ListaCompra {
         this.dataAtualizacao = dataAtualizacao;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public List<ProdutoDTO> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<ProdutoDTO> produtos) {
+        this.produtos = produtos;
+    }
+
+    public Long getListaCompraId() {
+        return listaCompraId;
+    }
+
+    public void setListaCompraId(Long listaCompraId) {
+        this.listaCompraId = listaCompraId;
     }
 
     @Override
     public String toString() {
-        return "ListaCompra{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
+        return "ListaCompraDTO{" +
+                "nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", dataCadastro=" + dataCadastro +
                 ", dataCompra=" + dataCompra +
                 ", dataAtualizacao=" + dataAtualizacao +
                 ", tipo='" + tipo + '\'' +
-                ", cliente=" + cliente +
                 ", produtos=" + produtos +
+                ", listaCompraId=" + listaCompraId +
                 '}';
     }
 }

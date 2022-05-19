@@ -24,7 +24,13 @@ public class ProdutoResource {
         Optional<Produto> produto = produtoService.findById(id);
         return ResponseEntity.ok().body(produto);
     }
-    @RequestMapping("/buscar-tudo")
+
+    @RequestMapping("/buscar-cod")
+    public ResponseEntity<Optional<ProdutoDTO>> getProdutoCodBarras(@RequestParam(value = "cod") String cod) {
+        Optional<ProdutoDTO> produto = produtoService.findByCodBarras(cod);
+        return ResponseEntity.ok().body(produto);
+    }
+    @RequestMapping("/buscar-todos")
     public ResponseEntity<List<Produto>> getTodosProdutos() {
         List<Produto> produto = produtoService.findAll();
         return ResponseEntity.ok().body(produto);
@@ -42,5 +48,12 @@ public class ProdutoResource {
         return ResponseEntity.ok().body(produto);
     }
 
-
+    @DeleteMapping("/deletar")
+    public ResponseEntity<String> deletarProduto(@RequestParam(value = "id") Long id) {
+        produtoService.delete(id);
+        return ResponseEntity.ok().body("produto: " + id + " deletado com sucesso!");
+    }
 }
+
+
+
