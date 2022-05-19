@@ -14,7 +14,8 @@ public enum CategoriaProduto {
     ENLATADOS,
     MERCEARIA,
     CONSERVAS,
-    FRUTAS_E_LEGUMES
+    FRUTAS_E_LEGUMES,
+    ACHOCOLATADOS
 
 
 }

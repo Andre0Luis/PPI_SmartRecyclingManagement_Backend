@@ -1,38 +1,33 @@
-package br.com.smr.SmartRecyclingManagement.domain;
+package br.com.smr.SmartRecyclingManagement.controller.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import org.springframework.lang.NonNull;
+import br.com.smr.SmartRecyclingManagement.domain.Cliente;
 
-import javax.persistence.*;
 import java.util.List;
 
-@Entity
-public class Cliente {
+public class ClienteDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
     private String nome;
-    @Column
     private String email;
-    @Column
     private String telefone;
+    private List<ListaCompraDTO> listaCompra;
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-    private List<ListaCompra> listaCompra;
-
-
-    public Cliente() {
-    }
-
-    public Cliente(Long id, String nome, String email, String telefone, List<ListaCompra> listaCompra) {
+    public ClienteDTO(Long id, String nome, String email, String telefone, List<ListaCompraDTO> listaCompra) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.telefone = telefone;
         this.listaCompra = listaCompra;
+    }
+
+    public ClienteDTO() {
+    }
+
+    public ClienteDTO(Cliente cliente) {
+        this.id = cliente.getId();
+        this.nome = cliente.getNome();
+        this.email = cliente.getEmail();
+        this.telefone = cliente.getTelefone();
     }
 
     public Long getId() {
@@ -67,17 +62,17 @@ public class Cliente {
         this.telefone = telefone;
     }
 
-    public List<ListaCompra> getListaCompra() {
+    public List<ListaCompraDTO> getListaCompra() {
         return listaCompra;
     }
 
-    public void setListaCompra(List<ListaCompra> listaCompra) {
+    public void setListaCompra(List<ListaCompraDTO> listaCompra) {
         this.listaCompra = listaCompra;
     }
 
     @Override
     public String toString() {
-        return "Cliente{" +
+        return "ClienteDTO{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", email='" + email + '\'' +

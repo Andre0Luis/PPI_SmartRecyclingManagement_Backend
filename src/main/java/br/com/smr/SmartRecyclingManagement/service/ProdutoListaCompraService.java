@@ -1,7 +1,10 @@
 package br.com.smr.SmartRecyclingManagement.service;
 
 import br.com.smr.SmartRecyclingManagement.controller.dto.ProdutoDTO;
+import br.com.smr.SmartRecyclingManagement.domain.ListaCompra;
 import br.com.smr.SmartRecyclingManagement.domain.Produto;
+import br.com.smr.SmartRecyclingManagement.domain.ProdutoListaCompra;
+import br.com.smr.SmartRecyclingManagement.repository.ProdutoListaCompraRepository;
 import br.com.smr.SmartRecyclingManagement.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
@@ -9,17 +12,21 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProdutoService {
+public class ProdutoListaCompraService {
 
+    public final ProdutoListaCompraRepository produtoListaCompraRepository;
     public final ProdutoRepository produtoRepository;
 
-    public ProdutoService(ProdutoRepository produtoRepository) {
+    public ProdutoListaCompraService(ProdutoListaCompraRepository produtoListaCompraRepository, ProdutoRepository produtoRepository) {
+        this.produtoListaCompraRepository = produtoListaCompraRepository;
         this.produtoRepository = produtoRepository;
     }
 
-    public Produto save(ProdutoDTO produto){
 
-        Produto produtoSalvo = new Produto();
+
+    public ProdutoListaCompra save(ProdutoDTO produto){
+
+        ProdutoListaCompra produtoSalvo = new ProdutoListaCompra();
         produtoSalvo.setPreco(produto.getPreco());
         produtoSalvo.setNome(produto.getNome());
         produtoSalvo.setMarca(produto.getMarca());
@@ -34,11 +41,15 @@ public class ProdutoService {
         produtoSalvo.setTipoMaterial(produto.getTipoMaterial());
         produtoSalvo.setTipoReciclagem(produto.getTipoReciclagem());
 
-        return produtoRepository.save(produtoSalvo);
+        ListaCompra listaCompra = new ListaCompra();
+        listaCompra.setId(produto.getListaCompraId());
+        produtoSalvo.setListaCompra(listaCompra);
+
+        return produtoListaCompraRepository.save(produtoSalvo);
     }
 
-    public Produto update(ProdutoDTO produto, Long id){
-        Produto produtoSalvo = produtoRepository.getById(id);
+    public ProdutoListaCompra update(ProdutoDTO produto, Long id){
+        ProdutoListaCompra produtoSalvo = produtoListaCompraRepository.getById(id);
         produtoSalvo.setPreco(produto.getPreco());
         produtoSalvo.setNome(produto.getNome());
         produtoSalvo.setMarca(produto.getMarca());
@@ -53,15 +64,15 @@ public class ProdutoService {
         produtoSalvo.setTipoMaterial(produto.getTipoMaterial());
         produtoSalvo.setTipoReciclagem(produto.getTipoReciclagem());
 
-        return produtoRepository.save(produtoSalvo);
+        return produtoListaCompraRepository.save(produtoSalvo);
     }
 
-    public List<Produto> findAll(){
-        return produtoRepository.findAll();
+    public List<ProdutoListaCompra> findAll(){
+        return produtoListaCompraRepository.findAll();
     }
 
-    public Optional<Produto> findById(Long id){
-        return produtoRepository.findById(id);
+    public Optional<ProdutoListaCompra> findById(Long id){
+        return produtoListaCompraRepository.findById(id);
     }
 
     public Optional<ProdutoDTO> findByCodBarras(String codBarras){
@@ -69,7 +80,7 @@ public class ProdutoService {
     }
 
     public void delete(Long id){
-        produtoRepository.deleteById(id);
+        produtoListaCompraRepository.deleteById(id);
     }
 
 }
