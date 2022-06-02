@@ -1,10 +1,11 @@
 package br.com.smr.SmartRecyclingManagement.controller;
 
-import br.com.smr.SmartRecyclingManagement.controller.dto.ClienteDTO;
+import br.com.smr.SmartRecyclingManagement.controller.dto.ConsumoMensalDTO;
 import br.com.smr.SmartRecyclingManagement.controller.dto.ListaCompraDTO;
+import br.com.smr.SmartRecyclingManagement.controller.dto.ProdutoDTO;
 import br.com.smr.SmartRecyclingManagement.domain.ListaCompra;
 import br.com.smr.SmartRecyclingManagement.service.ListaCompraService;
-import br.com.smr.SmartRecyclingManagement.service.ProdutoService;
+import br.com.smr.SmartRecyclingManagement.service.ProdutoListaCompraService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,18 +17,30 @@ import java.util.Optional;
 public class ListaCompraResource {
 
     private final ListaCompraService listaCompraService;
-    private final ProdutoService produtoService;
-    public ListaCompraResource(ListaCompraService listaCompraService, ProdutoService produtoService) {
+    private final ProdutoListaCompraService produtoService;
+    public ListaCompraResource(ListaCompraService listaCompraService, ProdutoListaCompraService produtoService) {
         this.listaCompraService = listaCompraService;
         this.produtoService = produtoService;
     }
 
 
-    @RequestMapping("/buscar")
-    public ResponseEntity<Optional<ListaCompraDTO>> getProduto(@RequestParam(value = "id") Long id) {
+    @RequestMapping("/busca-detalhada")
+    public ResponseEntity<Optional<ListaCompraDTO>> getListaDetalhada(@RequestParam(value = "id") Long id) {
         Optional<ListaCompraDTO> listaCompra = listaCompraService.findById(id);
+
+        List<ProdutoDTO> produtoDTO = produtoService.findAllByListaCompraId(id);
+        listaCompra.get().setProdutos(produtoDTO);
         return ResponseEntity.ok().body(listaCompra);
     }
+
+    @RequestMapping("/buscar")
+    public ResponseEntity<Optional<ListaCompraDTO>> getLista(@RequestParam(value = "id") Long id) {
+        Optional<ListaCompraDTO> listaCompra = listaCompraService.findById(id);
+
+        return ResponseEntity.ok().body(listaCompra);
+    }
+
+
     @RequestMapping("/buscar-todos")
     public ResponseEntity<List<ListaCompra>> getTodosProdutos() {
         List<ListaCompra> listaCompras = listaCompraService.findAll();
@@ -55,6 +68,14 @@ public class ListaCompraResource {
     public ResponseEntity<String> removerProduto(@RequestParam(value = "id") Long id) {
             listaCompraService.delete(id);
         return ResponseEntity.ok().body("Produto removido com sucesso");
+    }
+
+    @RequestMapping("/consumo-mensal/{id}")
+    public ResponseEntity<List<ListaCompra>> getConsumoMensal(@PathVariable Long id) {
+
+        List<ListaCompra> consumo = listaCompraService.findConsumoMensal(id);
+
+        return ResponseEntity.ok().body(consumo);
     }
 
 }

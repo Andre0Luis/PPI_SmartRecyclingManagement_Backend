@@ -1,5 +1,6 @@
 package br.com.smr.SmartRecyclingManagement.service;
 
+import br.com.smr.SmartRecyclingManagement.controller.dto.ConsumoMensalDTO;
 import br.com.smr.SmartRecyclingManagement.controller.dto.ProdutoDTO;
 import br.com.smr.SmartRecyclingManagement.domain.Produto;
 import br.com.smr.SmartRecyclingManagement.repository.ProdutoRepository;
@@ -33,8 +34,14 @@ public class ProdutoService {
         produtoSalvo.setCategoria(produto.getCategoria());
         produtoSalvo.setTipoMaterial(produto.getTipoMaterial());
         produtoSalvo.setTipoReciclagem(produto.getTipoReciclagem());
+        produtoSalvo.setPesoEmbalagem(pesoEmbalagem(produto));
 
         return produtoRepository.save(produtoSalvo);
+    }
+
+    public double pesoEmbalagem(ProdutoDTO produto){
+        double pesoEmbalagem = (produto.getPesoBruto() - produto.getPesoLiquido());
+    	return pesoEmbalagem;
     }
 
     public Produto update(ProdutoDTO produto, Long id){

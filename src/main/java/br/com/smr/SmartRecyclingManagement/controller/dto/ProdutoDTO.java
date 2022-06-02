@@ -1,9 +1,6 @@
 package br.com.smr.SmartRecyclingManagement.controller.dto;
 
-import br.com.smr.SmartRecyclingManagement.domain.CategoriaProduto;
-import br.com.smr.SmartRecyclingManagement.domain.Produto;
-import br.com.smr.SmartRecyclingManagement.domain.TipoMaterial;
-import br.com.smr.SmartRecyclingManagement.domain.TipoReciclagem;
+import br.com.smr.SmartRecyclingManagement.domain.*;
 
 public class ProdutoDTO {
 
@@ -60,6 +57,24 @@ public class ProdutoDTO {
         this.tipoReciclagem = produto.getTipoReciclagem();
         this.categoria = produto.getCategoria();
 
+    }
+
+    public ProdutoDTO(ProdutoListaCompra produtoListaCompra) {
+        this.id = produtoListaCompra.getId();
+        this.nome = produtoListaCompra.getNome();
+        this.descricao = produtoListaCompra.getDescricao();
+        this.preco = produtoListaCompra.getPreco();
+        this.quantidade = produtoListaCompra.getQuantidade();
+        this.marca = produtoListaCompra.getMarca();
+        this.codBarras = produtoListaCompra.getCodBarras();
+        this.peso = produtoListaCompra.getPeso();
+        this.pesoEmbalagem = produtoListaCompra.getPesoEmbalagem();
+        this.pesoLiquido = produtoListaCompra.getPesoLiquido();
+        this.pesoBruto = produtoListaCompra.getPesoBruto();
+        this.tipoMaterial = produtoListaCompra.getTipoMaterial();
+        this.tipoReciclagem = produtoListaCompra.getTipoReciclagem();
+        this.categoria = produtoListaCompra.getCategoria();
+        this.ListaCompraId = produtoListaCompra.getListaCompra().getId();
     }
 
     public Long getId() {

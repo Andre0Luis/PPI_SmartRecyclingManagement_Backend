@@ -1,8 +1,8 @@
 package br.com.smr.SmartRecyclingManagement.service;
 
+import br.com.smr.SmartRecyclingManagement.controller.dto.ConsumoMensalDTO;
 import br.com.smr.SmartRecyclingManagement.controller.dto.ProdutoDTO;
 import br.com.smr.SmartRecyclingManagement.domain.ListaCompra;
-import br.com.smr.SmartRecyclingManagement.domain.Produto;
 import br.com.smr.SmartRecyclingManagement.domain.ProdutoListaCompra;
 import br.com.smr.SmartRecyclingManagement.repository.ProdutoListaCompraRepository;
 import br.com.smr.SmartRecyclingManagement.repository.ProdutoRepository;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProdutoListaCompraService {
@@ -71,6 +72,10 @@ public class ProdutoListaCompraService {
         return produtoListaCompraRepository.findAll();
     }
 
+    public List<ProdutoDTO> findAllByListaCompraId(Long id){
+        return produtoListaCompraRepository.findAllByListaCompraId(id).stream().map(ProdutoDTO::new).collect(Collectors.toList());
+    }
+
     public Optional<ProdutoListaCompra> findById(Long id){
         return produtoListaCompraRepository.findById(id);
     }
@@ -82,5 +87,6 @@ public class ProdutoListaCompraService {
     public void delete(Long id){
         produtoListaCompraRepository.deleteById(id);
     }
+
 
 }
