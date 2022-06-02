@@ -11,4 +11,5 @@ public interface ListaCompraRepository extends JpaRepository<ListaCompra, Long> 
     ListaCompra findByClienteId(Long id);
 
     List<ListaCompra> findAllByClienteId(Long id);
+
 }

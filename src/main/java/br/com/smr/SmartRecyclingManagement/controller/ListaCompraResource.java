@@ -1,5 +1,6 @@
 package br.com.smr.SmartRecyclingManagement.controller;
 
+import br.com.smr.SmartRecyclingManagement.controller.dto.ConsumoMensalDTO;
 import br.com.smr.SmartRecyclingManagement.controller.dto.ListaCompraDTO;
 import br.com.smr.SmartRecyclingManagement.controller.dto.ProdutoDTO;
 import br.com.smr.SmartRecyclingManagement.domain.ListaCompra;
@@ -67,6 +68,14 @@ public class ListaCompraResource {
     public ResponseEntity<String> removerProduto(@RequestParam(value = "id") Long id) {
             listaCompraService.delete(id);
         return ResponseEntity.ok().body("Produto removido com sucesso");
+    }
+
+    @RequestMapping("/consumo-mensal/{id}")
+    public ResponseEntity<List<ListaCompra>> getConsumoMensal(@PathVariable Long id) {
+
+        List<ListaCompra> consumo = listaCompraService.findConsumoMensal(id);
+
+        return ResponseEntity.ok().body(consumo);
     }
 
 }
