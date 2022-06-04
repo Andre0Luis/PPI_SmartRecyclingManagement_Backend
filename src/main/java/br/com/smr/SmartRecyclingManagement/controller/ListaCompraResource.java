@@ -71,9 +71,9 @@ public class ListaCompraResource {
     }
 
     @RequestMapping("/consumo-mensal/{id}")
-    public ResponseEntity<List<ListaCompra>> getConsumoMensal(@PathVariable Long id) {
+    public ResponseEntity<ConsumoMensalDTO> getConsumoMensal(@PathVariable Long id) {
 
-        List<ListaCompra> consumo = listaCompraService.findConsumoMensal(id);
+        ConsumoMensalDTO consumo = listaCompraService.findConsumoMensal(id);
 
         return ResponseEntity.ok().body(consumo);
     }

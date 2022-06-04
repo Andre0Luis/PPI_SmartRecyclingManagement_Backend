@@ -1,9 +1,11 @@
 package br.com.smr.SmartRecyclingManagement.service;
 
-import br.com.smr.SmartRecyclingManagement.controller.dto.ConsumoMensalDTO;
 import br.com.smr.SmartRecyclingManagement.controller.dto.ProdutoDTO;
+import br.com.smr.SmartRecyclingManagement.domain.CriteriaProdutoRepository;
 import br.com.smr.SmartRecyclingManagement.domain.Produto;
 import br.com.smr.SmartRecyclingManagement.repository.ProdutoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +16,11 @@ public class ProdutoService {
 
     public final ProdutoRepository produtoRepository;
 
-    public ProdutoService(ProdutoRepository produtoRepository) {
+    public final CriteriaProdutoRepository criteriaProdutoRepository;
+
+    public ProdutoService(ProdutoRepository produtoRepository, CriteriaProdutoRepository criteriaProdutoRepository) {
         this.produtoRepository = produtoRepository;
+        this.criteriaProdutoRepository = criteriaProdutoRepository;
     }
 
     public Produto save(ProdutoDTO produto){
@@ -79,4 +84,7 @@ public class ProdutoService {
         produtoRepository.deleteById(id);
     }
 
+    public Page<ProdutoDTO> findAllCriteria(Pageable pageable, String nome, String marca, String codBarras){
+        return criteriaProdutoRepository.findAllProdutos(pageable, nome, marca, codBarras).map(ProdutoDTO::new);
+    }
 }

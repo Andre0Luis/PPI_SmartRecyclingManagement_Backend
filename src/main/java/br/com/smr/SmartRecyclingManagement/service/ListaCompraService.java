@@ -96,7 +96,7 @@ public class ListaCompraService {
         listaCompraRepository.deleteById(id);
     }
 
-    public List<ListaCompra> findConsumoMensal(Long id) {
+    public ConsumoMensalDTO findConsumoMensal(Long id) {
         //Reset da variavel totalItens
         totalItens = 0;
         plastico = 0L;
@@ -109,6 +109,8 @@ public class ListaCompraService {
 
         LocalDate dataHoje = LocalDate.now();
 
+        ConsumoMensalDTO consumoMensalDTO = new ConsumoMensalDTO();
+
         List<ListaCompra> clienteLista = listaCompraRepository.findAllByClienteId(id);
 
         //Filtra somente a lista de compras do mês atual
@@ -116,7 +118,7 @@ public class ListaCompraService {
 
         if (listaCompras.size() > 0) {
 
-            ConsumoMensalDTO consumoMensalDTO = new ConsumoMensalDTO();
+
 
             listaCompras.forEach(listaCompra -> {
                 Optional<ListaCompra> comprasLista = listaCompraRepository.findById(listaCompra.getId());
@@ -146,7 +148,7 @@ public class ListaCompraService {
             consumoMensalDTO.setNaoReciclavel(porcentagemList(naoReciclavel));
             consumoMensalDTO.setGastoMensal(valorTotal);
         }
-        return clienteLista;
+        return consumoMensalDTO;
     }
 
     public Double porcentagemList(Long item){
