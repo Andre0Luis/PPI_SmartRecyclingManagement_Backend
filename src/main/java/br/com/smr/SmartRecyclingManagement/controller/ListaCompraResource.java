@@ -24,37 +24,12 @@ public class ListaCompraResource {
         this.produtoService = produtoService;
     }
 
-
-    @RequestMapping("/busca-detalhada")
-    public ResponseEntity<Optional<ListaCompraDTO>> getListaDetalhada(@RequestParam(value = "id") Long id) {
-        Optional<ListaCompraDTO> listaCompra = listaCompraService.findById(id);
-
-        List<ProdutoDTO> produtoDTO = produtoService.findAllByListaCompraId(id);
-        listaCompra.get().setProdutos(produtoDTO);
-        return ResponseEntity.ok().body(listaCompra);
-    }
-
-    @RequestMapping("/buscar")
-    public ResponseEntity<Optional<ListaCompraDTO>> getLista(@RequestParam(value = "id") Long id) {
-        Optional<ListaCompraDTO> listaCompra = listaCompraService.findById(id);
-
-        return ResponseEntity.ok().body(listaCompra);
-    }
-
-
-    @RequestMapping("/buscar-todos")
-    public ResponseEntity<List<ListaCompra>> getTodosProdutos() {
-        List<ListaCompra> listaCompras = listaCompraService.findAll();
-        return ResponseEntity.ok().body(listaCompras);
-    }
-
     @PostMapping("/salvar")
     public ResponseEntity<Optional<ListaCompra>> salvarProduto(@RequestBody ListaCompraDTO dto) {
         //Essa informação vira da autenticação com o token
         String email = "aluis283@gmail.com";
         System.out.println("Produtos" + dto.getProdutosId());
         Optional<ListaCompra> listaCompra = listaCompraService.save(dto, email);
-
 
         return ResponseEntity.ok().body(listaCompra);
     }
@@ -64,25 +39,48 @@ public class ListaCompraResource {
         return ResponseEntity.ok().body(listaCompra);
     }
 
-    @DeleteMapping("/remover")
-    public ResponseEntity<String> removerProduto(@RequestParam(value = "id") Long id) {
-            listaCompraService.delete(id);
-        return ResponseEntity.ok().body("Produto removido com sucesso");
+    @RequestMapping(value = "/busca-detalhada", method = RequestMethod.GET)
+    public ResponseEntity<Optional<ListaCompraDTO>> getListaDetalhada(@RequestParam(value = "id") Long id) {
+        Optional<ListaCompraDTO> listaCompra = listaCompraService.findById(id);
+
+        List<ProdutoDTO> produtoDTO = produtoService.findAllByListaCompraId(id);
+        listaCompra.get().setProdutos(produtoDTO);
+        return ResponseEntity.ok().body(listaCompra);
     }
 
-    @RequestMapping("/consumo-mensal/{id}")
+    @RequestMapping(value = "/buscar", method = RequestMethod.GET)
+    public ResponseEntity<Optional<ListaCompraDTO>> getLista(@RequestParam(value = "id") Long id) {
+        Optional<ListaCompraDTO> listaCompra = listaCompraService.findById(id);
+
+        return ResponseEntity.ok().body(listaCompra);
+    }
+
+
+    @RequestMapping(value = "/buscar-todos", method = RequestMethod.GET)
+    public ResponseEntity<List<ListaCompra>> getTodosProdutos() {
+        List<ListaCompra> listaCompras = listaCompraService.findAll();
+        return ResponseEntity.ok().body(listaCompras);
+    }
+
+    @RequestMapping(value = "/consumo-mensal/{id}", method = RequestMethod.GET)
     public ResponseEntity<ConsumoMensalDTO> getConsumoMensal(@PathVariable Long id) {
 
         ConsumoMensalDTO consumo = listaCompraService.findConsumoMensal(id);
 
         return ResponseEntity.ok().body(consumo);
     }
-    @RequestMapping("/consumo-mensal-peso/{id}")
+    @RequestMapping(value = "/consumo-mensal-peso/{id}", method = RequestMethod.GET)
     public ResponseEntity<ConsumoMensalPesoDTO> getConsumoMensalPeso(@PathVariable Long id) {
 
         ConsumoMensalPesoDTO consumo = listaCompraService.findConsumoMensalPeso(id);
 
         return ResponseEntity.ok().body(consumo);
+    }
+
+    @DeleteMapping("/remover")
+    public ResponseEntity<String> removerProduto(@RequestParam(value = "id") Long id) {
+        listaCompraService.delete(id);
+        return ResponseEntity.ok().body("Produto removido com sucesso");
     }
 
 }
