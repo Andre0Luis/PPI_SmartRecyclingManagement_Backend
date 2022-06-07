@@ -1,6 +1,7 @@
 package br.com.smr.SmartRecyclingManagement.controller;
 
 import br.com.smr.SmartRecyclingManagement.controller.dto.ConsumoMensalDTO;
+import br.com.smr.SmartRecyclingManagement.controller.dto.ConsumoMensalPesoDTO;
 import br.com.smr.SmartRecyclingManagement.controller.dto.ListaCompraDTO;
 import br.com.smr.SmartRecyclingManagement.controller.dto.ProdutoDTO;
 import br.com.smr.SmartRecyclingManagement.domain.ListaCompra;
@@ -50,9 +51,8 @@ public class ListaCompraResource {
     @PostMapping("/salvar")
     public ResponseEntity<Optional<ListaCompra>> salvarProduto(@RequestBody ListaCompraDTO dto) {
         //Essa informação vira da autenticação com o token
-
         String email = "aluis283@gmail.com";
-
+        System.out.println("Produtos" + dto.getProdutosId());
         Optional<ListaCompra> listaCompra = listaCompraService.save(dto, email);
 
 
@@ -71,9 +71,16 @@ public class ListaCompraResource {
     }
 
     @RequestMapping("/consumo-mensal/{id}")
-    public ResponseEntity<List<ListaCompra>> getConsumoMensal(@PathVariable Long id) {
+    public ResponseEntity<ConsumoMensalDTO> getConsumoMensal(@PathVariable Long id) {
 
-        List<ListaCompra> consumo = listaCompraService.findConsumoMensal(id);
+        ConsumoMensalDTO consumo = listaCompraService.findConsumoMensal(id);
+
+        return ResponseEntity.ok().body(consumo);
+    }
+    @RequestMapping("/consumo-mensal-peso/{id}")
+    public ResponseEntity<ConsumoMensalPesoDTO> getConsumoMensalPeso(@PathVariable Long id) {
+
+        ConsumoMensalPesoDTO consumo = listaCompraService.findConsumoMensalPeso(id);
 
         return ResponseEntity.ok().body(consumo);
     }

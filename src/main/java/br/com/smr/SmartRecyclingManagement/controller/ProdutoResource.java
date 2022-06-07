@@ -4,6 +4,8 @@ import br.com.smr.SmartRecyclingManagement.controller.dto.ConsumoMensalDTO;
 import br.com.smr.SmartRecyclingManagement.controller.dto.ProdutoDTO;
 import br.com.smr.SmartRecyclingManagement.domain.Produto;
 import br.com.smr.SmartRecyclingManagement.service.ProdutoService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +37,16 @@ public class ProdutoResource {
     public ResponseEntity<List<Produto>> getTodosProdutos() {
         List<Produto> produto = produtoService.findAll();
         return ResponseEntity.ok().body(produto);
+    }
+
+    @RequestMapping("/buscar-produto")
+    public ResponseEntity<List<ProdutoDTO>> findProdutos(Pageable pageable,
+                                                         @RequestParam(required = false, value = "nome") String nome,
+                                                         @RequestParam(required = false, value = "marca") String marca,
+                                                         @RequestParam(required = false, value = "codBarras") String codBarras) {
+        Page<ProdutoDTO> produtos = produtoService.findAllCriteria(pageable, nome, marca, codBarras);
+        List<ProdutoDTO> produtosList = produtos.getContent();
+        return ResponseEntity.ok().body(produtosList);
     }
 
     @PostMapping("/salvar")

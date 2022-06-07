@@ -1,11 +1,10 @@
 package br.com.smr.SmartRecyclingManagement.service;
 
 import br.com.smr.SmartRecyclingManagement.controller.dto.ConsumoMensalDTO;
+import br.com.smr.SmartRecyclingManagement.controller.dto.ConsumoMensalPesoDTO;
 import br.com.smr.SmartRecyclingManagement.controller.dto.ListaCompraDTO;
-import br.com.smr.SmartRecyclingManagement.domain.Cliente;
-import br.com.smr.SmartRecyclingManagement.domain.ListaCompra;
-import br.com.smr.SmartRecyclingManagement.domain.ProdutoListaCompra;
-import br.com.smr.SmartRecyclingManagement.domain.TipoReciclagem;
+import br.com.smr.SmartRecyclingManagement.controller.dto.ProdutoDTO;
+import br.com.smr.SmartRecyclingManagement.domain.*;
 import br.com.smr.SmartRecyclingManagement.repository.ListaCompraRepository;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +29,14 @@ public class ListaCompraService {
     static Long organico;
     static Long naoReciclavel;
     static Double valorTotal;
+    static Double pesoPlastico;
+    static Double pesoMetal;
+    static Double pesoPapel;
+    static Double pesoVidro;
+    static Double pesoOrganico;
+    static Double pesoNaoReciclavel;
+    static Double pesoTotal;
+    static Double pesoTotalLiquido;
 
     public ListaCompraService(ListaCompraRepository listaCompraRepository, ProdutoService produtoService, ProdutoListaCompraService produtoListaCompraService, ClienteService clienteService) {
         this.listaCompraRepository = listaCompraRepository;
@@ -61,12 +68,13 @@ public class ListaCompraService {
         ListaCompra listaCompraSalva = listaCompraRepository.save(listaCompra);
 
         //Vai salvar todos os itens da lista de compras
-        dto.getProdutos().forEach(produto -> {
-            produto.setListaCompraId(listaCompraSalva.getId());
-            produtoListaCompraService.save(produto);
-        } );
-
-
+        dto.getProdutosId().forEach(produtoId -> {
+            Optional<ProdutoDTO> produtoResult = produtoService.findById(produtoId).map(ProdutoDTO::new);
+            if (produtoResult.isPresent()) {
+                produtoResult.get().setListaCompraId(listaCompraSalva.getId());
+                produtoListaCompraService.save(produtoResult.get());
+            }
+        });
         return listaCompraRepository.findById(listaCompra.getId());
     }
 
@@ -96,7 +104,7 @@ public class ListaCompraService {
         listaCompraRepository.deleteById(id);
     }
 
-    public List<ListaCompra> findConsumoMensal(Long id) {
+    public ConsumoMensalDTO findConsumoMensal(Long id) {
         //Reset da variavel totalItens
         totalItens = 0;
         plastico = 0L;
@@ -107,20 +115,17 @@ public class ListaCompraService {
         naoReciclavel = 0L;
         valorTotal = 0.0;
 
-        LocalDate dataHoje = LocalDate.now();
+        List<ListaCompra> listaCompras = findListaCompraById(id);
 
-        List<ListaCompra> clienteLista = listaCompraRepository.findAllByClienteId(id);
-
-        //Filtra somente a lista de compras do mês atual
-        List<ListaCompra> listaCompras = clienteLista.stream().filter(listaCompra -> listaCompra.getDataCompra().getMonth().equals(dataHoje.getMonth())).collect(Collectors.toList());
+        ConsumoMensalDTO consumoMensalDTO = new ConsumoMensalDTO();
 
         if (listaCompras.size() > 0) {
 
-            ConsumoMensalDTO consumoMensalDTO = new ConsumoMensalDTO();
-
             listaCompras.forEach(listaCompra -> {
+
                 Optional<ListaCompra> comprasLista = listaCompraRepository.findById(listaCompra.getId());
                 if (comprasLista.isPresent()) {
+
                     //Soma a quantidade total de itens do mes
                     totalItens = totalItens + comprasLista.get().getProdutos().size();
 
@@ -146,7 +151,7 @@ public class ListaCompraService {
             consumoMensalDTO.setNaoReciclavel(porcentagemList(naoReciclavel));
             consumoMensalDTO.setGastoMensal(valorTotal);
         }
-        return clienteLista;
+        return consumoMensalDTO;
     }
 
     public Double porcentagemList(Long item){
@@ -155,4 +160,83 @@ public class ListaCompraService {
 
         return porcentagem;
     }
+
+    public List<ListaCompra> findListaCompraById(Long id){
+        LocalDate dataHoje = LocalDate.now();
+        List<ListaCompra> clienteLista = listaCompraRepository.findAllByClienteId(id);
+
+        //Filtra somente a lista de compras do mês atual
+        return clienteLista.stream().filter(listaCompra -> listaCompra.getDataCompra().getMonth().equals(dataHoje.getMonth())).collect(Collectors.toList());
+    }
+    public ConsumoMensalPesoDTO findConsumoMensalPeso(Long id) {
+        //Reset da variavel totalItens
+        pesoPlastico = 0.0;
+        pesoMetal = 0.0;
+        pesoPapel = 0.0;
+        pesoVidro = 0.0;
+        pesoOrganico = 0.0;
+        pesoNaoReciclavel = 0.0;
+        pesoTotal = 0.0;
+        pesoTotalLiquido = 0.0;
+
+        List<ListaCompra> listaCompras = findListaCompraById(id);
+
+        ConsumoMensalPesoDTO consumoMensalPesoDTO = new ConsumoMensalPesoDTO();
+
+        if (listaCompras.size() > 0) {
+
+            listaCompras.forEach(listaCompra -> {
+
+                Optional<ListaCompra> comprasLista = listaCompraRepository.findById(listaCompra.getId());
+                if (comprasLista.isPresent()) {
+
+                    //Filtro para verificar se os tipos de produtos recicláveis
+                    comprasLista.get().getProdutos().stream().filter(item -> item.getTipoReciclagem().equals(TipoReciclagem.PLASTICO)).forEach(item -> {
+                        pesoPlastico = pesoPlastico + item.getPesoEmbalagem();
+                        pesoTotal = pesoTotal + item.getPesoBruto();
+                        pesoTotalLiquido = pesoTotalLiquido + item.getPesoLiquido();
+                    });
+                    comprasLista.get().getProdutos().stream().filter(item -> item.getTipoReciclagem().equals(TipoReciclagem.METAL)).forEach(item -> {
+                        pesoMetal = pesoMetal + item.getPesoEmbalagem();
+                        pesoTotal = pesoTotal + item.getPesoBruto();
+                        pesoTotalLiquido = pesoTotalLiquido + item.getPesoLiquido();
+                    });
+                    comprasLista.get().getProdutos().stream().filter(item -> item.getTipoReciclagem().equals(TipoReciclagem.PAPEL)).forEach(item -> {
+                        pesoPapel = pesoPapel + item.getPesoEmbalagem();
+                        pesoTotal = pesoTotal + item.getPesoBruto();
+                        pesoTotalLiquido = pesoTotalLiquido + item.getPesoLiquido();
+                    });
+                    comprasLista.get().getProdutos().stream().filter(item -> item.getTipoReciclagem().equals(TipoReciclagem.VIDRO)).forEach(item -> {
+                        pesoVidro = pesoVidro + item.getPesoEmbalagem();
+                        pesoTotal = pesoTotal + item.getPesoBruto();
+                        pesoTotalLiquido = pesoTotalLiquido + item.getPesoLiquido();
+                    });
+                    comprasLista.get().getProdutos().stream().filter(item -> item.getTipoReciclagem().equals(TipoReciclagem.ORGANICO)).forEach(item -> {
+                        pesoOrganico = pesoOrganico + item.getPesoEmbalagem();
+                        pesoTotal = pesoTotal + item.getPesoBruto();
+                        pesoTotalLiquido = pesoTotalLiquido + item.getPesoLiquido();
+                    });
+                    comprasLista.get().getProdutos().stream().filter(item -> item.getTipoReciclagem().equals(TipoReciclagem.NAO_RECICLAVEL)).forEach(item -> {
+                        pesoNaoReciclavel = pesoNaoReciclavel + item.getPesoEmbalagem();
+                        pesoTotal = pesoTotal + item.getPesoBruto();
+                        pesoTotalLiquido = pesoTotalLiquido + item.getPesoLiquido();
+                    });
+
+                    consumoMensalPesoDTO.setPesoMetal(pesoMetal);
+                    consumoMensalPesoDTO.setPesoPlastico(pesoPlastico);
+                    consumoMensalPesoDTO.setPesoPapel(pesoPapel);
+                    consumoMensalPesoDTO.setPesoVidro(pesoVidro);
+                    consumoMensalPesoDTO.setPesoOrganico(pesoOrganico);
+                    consumoMensalPesoDTO.setPesoNaoReciclavel(pesoNaoReciclavel);
+                    consumoMensalPesoDTO.setPesoTotalMensalEmbalagem(pesoMetal + pesoPlastico + pesoPapel + pesoVidro + pesoOrganico + pesoNaoReciclavel);
+                    consumoMensalPesoDTO.setPesoTotalMensalLiquido(pesoTotalLiquido);
+                    consumoMensalPesoDTO.setPesoTotal(pesoTotal);
+
+                }
+            });
+        }
+        return consumoMensalPesoDTO;
+    }
+
+
 }

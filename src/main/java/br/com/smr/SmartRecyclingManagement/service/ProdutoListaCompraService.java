@@ -35,12 +35,12 @@ public class ProdutoListaCompraService {
         produtoSalvo.setCodBarras(produto.getCodBarras());
         produtoSalvo.setPesoBruto(produto.getPesoBruto());
         produtoSalvo.setPesoLiquido(produto.getPesoLiquido());
-        produtoSalvo.setPesoEmbalagem(produto.getPesoEmbalagem());
         produtoSalvo.setDescricao(produto.getDescricao());
         produtoSalvo.setQuantidade(produto.getQuantidade());
         produtoSalvo.setCategoria(produto.getCategoria());
         produtoSalvo.setTipoMaterial(produto.getTipoMaterial());
         produtoSalvo.setTipoReciclagem(produto.getTipoReciclagem());
+        produtoSalvo.setPesoEmbalagem(pesoEmbalagem(produto.getPesoBruto(), produto.getPesoLiquido()));
 
         ListaCompra listaCompra = new ListaCompra();
         listaCompra.setId(produto.getListaCompraId());
@@ -88,5 +88,8 @@ public class ProdutoListaCompraService {
         produtoListaCompraRepository.deleteById(id);
     }
 
+    public Double pesoEmbalagem(Double bruto, Double liquido){
+        return bruto - liquido;
+    }
 
 }
