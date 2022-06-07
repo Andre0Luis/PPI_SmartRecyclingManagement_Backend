@@ -1,10 +1,12 @@
 package br.com.smr.SmartRecyclingManagement.controller.dto;
 
 import br.com.smr.SmartRecyclingManagement.domain.*;
+import com.sun.istack.NotNull;
 
 public class ProdutoDTO {
 
     private Long id;
+
     private String nome;
     private String descricao;
     private Double preco;

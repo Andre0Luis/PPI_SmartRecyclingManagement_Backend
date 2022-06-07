@@ -21,21 +21,6 @@ public class ClienteResource {
         this.clienteService = clienteService;
         this.listaCompraService = listaCompraService;
     }
-    @RequestMapping("/buscar")
-    public ResponseEntity<Optional<ClienteDTO>> buscarCliente(@RequestParam(value = "id") Long id){
-        Optional<ClienteDTO> cliente = clienteService.findById(id);
-
-        List<ListaCompraDTO> listaCompra = listaCompraService.findAllByClienteId(cliente.get().getId());
-        cliente.get().setListaCompra(listaCompra);
-
-        return ResponseEntity.ok().body(cliente);
-    }
-
-    @RequestMapping("buscar-todos")
-    public ResponseEntity<List<Cliente>> buscarTodos(){
-        List<Cliente> clientes = clienteService.findAll();
-        return ResponseEntity.ok().body(clientes);
-    }
 
     @PostMapping("/salvar")
     public ResponseEntity<Cliente> salvar(@RequestBody ClienteDTO cliente){
@@ -49,7 +34,23 @@ public class ClienteResource {
         return ResponseEntity.ok().body(clienteAtualizado);
     }
 
-    @RequestMapping("/excluir")
+    @RequestMapping(value = "/buscar", method = RequestMethod.GET)
+    public ResponseEntity<Optional<ClienteDTO>> buscarCliente(@RequestParam(value = "id") Long id){
+        Optional<ClienteDTO> cliente = clienteService.findById(id);
+
+        List<ListaCompraDTO> listaCompra = listaCompraService.findAllByClienteId(cliente.get().getId());
+        cliente.get().setListaCompra(listaCompra);
+
+        return ResponseEntity.ok().body(cliente);
+    }
+
+    @RequestMapping(value = "buscar-todos", method = RequestMethod.GET)
+    public ResponseEntity<List<Cliente>> buscarTodos(){
+        List<Cliente> clientes = clienteService.findAll();
+        return ResponseEntity.ok().body(clientes);
+    }
+
+    @DeleteMapping("/excluir")
     public ResponseEntity<Void> excluir(@RequestParam(value = "id") Long id){
         clienteService.delete(id);
         return ResponseEntity.ok().build();
