@@ -3,6 +3,7 @@ package br.com.smr.SmartRecyclingManagement.controller.dto;
 import br.com.smr.SmartRecyclingManagement.domain.ListaCompra;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListaCompraDTO {
@@ -15,8 +16,9 @@ public class ListaCompraDTO {
     private String tipo;
     private List<ProdutoDTO> produtos;
     private Long listaCompraId;
+    private ArrayList<Long> produtosId;
 
-    public ListaCompraDTO(String nome, String descricao, LocalDate dataCadastro, LocalDate dataCompra, LocalDate dataAtualizacao, String tipo, List<ProdutoDTO> produtos, Long listaCompraId) {
+    public ListaCompraDTO(String nome, String descricao, LocalDate dataCadastro, LocalDate dataCompra, LocalDate dataAtualizacao, String tipo, List<ProdutoDTO> produtos, Long listaCompraId, ArrayList<Long> produtosId) {
         this.nome = nome;
         this.descricao = descricao;
         this.dataCadastro = dataCadastro;
@@ -25,6 +27,7 @@ public class ListaCompraDTO {
         this.tipo = tipo;
         this.produtos = produtos;
         this.listaCompraId = listaCompraId;
+        this.produtosId = produtosId;
     }
 
     public ListaCompraDTO() {
@@ -105,6 +108,14 @@ public class ListaCompraDTO {
         this.listaCompraId = listaCompraId;
     }
 
+    public ArrayList<Long> getProdutosId() {
+        return produtosId;
+    }
+
+    public void setProdutosId(ArrayList<Long> produtosId) {
+        this.produtosId = produtosId;
+    }
+
     @Override
     public String toString() {
         return "ListaCompraDTO{" +
@@ -116,6 +127,7 @@ public class ListaCompraDTO {
                 ", tipo='" + tipo + '\'' +
                 ", produtos=" + produtos +
                 ", listaCompraId=" + listaCompraId +
+                ", produtosId=" + produtosId +
                 '}';
     }
 }
