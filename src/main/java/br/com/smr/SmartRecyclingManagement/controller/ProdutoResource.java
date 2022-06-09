@@ -4,7 +4,6 @@ import br.com.smr.SmartRecyclingManagement.controller.dto.ConsumoMensalDTO;
 import br.com.smr.SmartRecyclingManagement.controller.dto.ProdutoDTO;
 import br.com.smr.SmartRecyclingManagement.domain.Produto;
 import br.com.smr.SmartRecyclingManagement.service.ProdutoService;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,7 @@ public class ProdutoResource {
     public ProdutoResource(ProdutoService produtoService) {
         this.produtoService = produtoService;
     }
-    @ApiOperation(value = "Salva um produto no banco de dados")
+
     @PostMapping("/salvar")
     public ResponseEntity<Produto> salvarProduto(@RequestBody ProdutoDTO produtoDTO) {
         Produto produto = produtoService.save(produtoDTO);
