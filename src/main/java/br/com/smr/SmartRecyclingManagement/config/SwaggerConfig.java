@@ -3,39 +3,24 @@ package br.com.smr.SmartRecyclingManagement.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.reactive.config.ResourceHandlerRegistry;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
-public class SwaggerConfig implements SwaggerConfigO {
-    @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("br.com.smr.SmartRecyclingManagement.controller"))
-                .paths(PathSelectors.any())
-                .build()
-                .apiInfo(apiInfo());
-    }
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("SMR")
-                .description("Smart Recycling Management")
-                .version("0.0.1")
-                .build();
-    }
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-
-        // enabling swagger-ui part for visual documentation
-        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("swagger-ui/index.html").addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
+public class SwaggerConfig {
+//    @Bean
+//    public Docket api() {
+//        return new Docket(DocumentationType.SWAGGER_2)
+//                .select()
+//                .apis(RequestHandlerSelectors.basePackage("br.com.smr.SmartRecyclingManagement.controller"))
+//                .paths(PathSelectors.any())
+//                .build()
+//                .apiInfo(apiInfo());
+//    }
+//    private ApiInfo apiInfo() {
+//        return new ApiInfoBuilder()
+//                .title("SMR")
+//                .description("Smart Recycling Management")
+//                .version("0.0.1")
+//                .build();
+//    }
 
 }
