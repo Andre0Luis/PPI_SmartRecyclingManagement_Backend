@@ -4,6 +4,8 @@ import br.com.smr.SmartRecyclingManagement.controller.dto.ConsumoMensalDTO;
 import br.com.smr.SmartRecyclingManagement.controller.dto.ProdutoDTO;
 import br.com.smr.SmartRecyclingManagement.domain.Produto;
 import br.com.smr.SmartRecyclingManagement.service.ProdutoService;
+import io.swagger.v3.oas.annotations.Parameter;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +53,7 @@ public class ProdutoResource {
     }
 
     @RequestMapping(value = "/buscar-produto", method = RequestMethod.GET)
-    public ResponseEntity<List<ProdutoDTO>> findProdutos(Pageable pageable,
+    public ResponseEntity<List<ProdutoDTO>> findProdutos(@ParameterObject Pageable pageable,
                                                          @RequestParam(required = false, value = "nome") String nome,
                                                          @RequestParam(required = false, value = "marca") String marca,
                                                          @RequestParam(required = false, value = "codBarras") String codBarras) {

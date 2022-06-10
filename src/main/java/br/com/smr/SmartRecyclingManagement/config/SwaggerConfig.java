@@ -1,26 +1,31 @@
 package br.com.smr.SmartRecyclingManagement.config;
 
 
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
-//    @Bean
-//    public Docket api() {
-//        return new Docket(DocumentationType.SWAGGER_2)
-//                .select()
-//                .apis(RequestHandlerSelectors.basePackage("br.com.smr.SmartRecyclingManagement.controller"))
-//                .paths(PathSelectors.any())
-//                .build()
-//                .apiInfo(apiInfo());
-//    }
-//    private ApiInfo apiInfo() {
-//        return new ApiInfoBuilder()
-//                .title("SMR")
-//                .description("Smart Recycling Management")
-//                .version("0.0.1")
-//                .build();
-//    }
+
+    @Bean
+    public GroupedOpenApi smartRecyclingManagementApi() {
+        return GroupedOpenApi.builder()
+                .group("SmartRecyclingManagement")
+                .packagesToScan("br.com.smr.SmartRecyclingManagement")
+                .build();
+    }
+
+    @Bean
+    public OpenAPI springShopOpenAPI() {
+        return new OpenAPI()
+                .info(new Info().title("SRM - Smart Recycling Management")
+                        .version("v1.0.0")
+                        .description("SRM - Smart Recycling Management, é uma API para ajudar a gerenciar o processo de reciclagem de materiais e monitorar seu consumo mensal sobre eles."));
+    }
+
+
 
 }
