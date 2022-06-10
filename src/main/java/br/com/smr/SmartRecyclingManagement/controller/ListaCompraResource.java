@@ -62,17 +62,17 @@ public class ListaCompraResource {
         return ResponseEntity.ok().body(listaCompras);
     }
 
-    @RequestMapping(value = "/consumo-mensal/{id}", method = RequestMethod.GET)
-    public ResponseEntity<ConsumoMensalDTO> getConsumoMensal(@PathVariable Long id) {
+    @RequestMapping(value = "/consumo-mensal/{clienteId}", method = RequestMethod.GET)
+    public ResponseEntity<ConsumoMensalDTO> getConsumoMensal(@PathVariable Long clienteId) {
 
-        ConsumoMensalDTO consumo = listaCompraService.findConsumoMensal(id);
+        ConsumoMensalDTO consumo = listaCompraService.findConsumoMensal(clienteId);
 
         return ResponseEntity.ok().body(consumo);
     }
-    @RequestMapping(value = "/consumo-mensal-peso/{id}", method = RequestMethod.GET)
-    public ResponseEntity<ConsumoMensalPesoDTO> getConsumoMensalPeso(@PathVariable Long id) {
+    @RequestMapping(value = "/consumo-mensal-peso/{clienteId}", method = RequestMethod.GET)
+    public ResponseEntity<ConsumoMensalPesoDTO> getConsumoMensalPeso(@PathVariable Long clienteId) {
 
-        ConsumoMensalPesoDTO consumo = listaCompraService.findConsumoMensalPeso(id);
+        ConsumoMensalPesoDTO consumo = listaCompraService.findConsumoMensalPeso(clienteId);
 
         return ResponseEntity.ok().body(consumo);
     }
