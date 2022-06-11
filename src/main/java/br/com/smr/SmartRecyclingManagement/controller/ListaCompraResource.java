@@ -1,9 +1,6 @@
 package br.com.smr.SmartRecyclingManagement.controller;
 
-import br.com.smr.SmartRecyclingManagement.controller.dto.ConsumoMensalDTO;
-import br.com.smr.SmartRecyclingManagement.controller.dto.ConsumoMensalPesoDTO;
-import br.com.smr.SmartRecyclingManagement.controller.dto.ListaCompraDTO;
-import br.com.smr.SmartRecyclingManagement.controller.dto.ProdutoDTO;
+import br.com.smr.SmartRecyclingManagement.controller.dto.*;
 import br.com.smr.SmartRecyclingManagement.domain.ListaCompra;
 import br.com.smr.SmartRecyclingManagement.service.ListaCompraService;
 import br.com.smr.SmartRecyclingManagement.service.ProdutoListaCompraService;
