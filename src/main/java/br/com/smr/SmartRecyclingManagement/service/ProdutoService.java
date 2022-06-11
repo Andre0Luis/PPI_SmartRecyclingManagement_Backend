@@ -1,7 +1,7 @@
 package br.com.smr.SmartRecyclingManagement.service;
 
 import br.com.smr.SmartRecyclingManagement.controller.dto.ProdutoDTO;
-import br.com.smr.SmartRecyclingManagement.domain.CriteriaProdutoRepository;
+import br.com.smr.SmartRecyclingManagement.repository.CriteriaProdutoRepository;
 import br.com.smr.SmartRecyclingManagement.domain.Produto;
 import br.com.smr.SmartRecyclingManagement.repository.ProdutoRepository;
 import org.springframework.data.domain.Page;

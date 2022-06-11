@@ -14,7 +14,8 @@ public class SwaggerConfig {
     public GroupedOpenApi smartRecyclingManagementApi() {
         return GroupedOpenApi.builder()
                 .group("SmartRecyclingManagement")
-                .packagesToScan("br.com.smr.SmartRecyclingManagement")
+                .packagesToScan("br.com.smr.SmartRecyclingManagement.controller")
+                .pathsToMatch("/api/**")
                 .build();
     }
 
